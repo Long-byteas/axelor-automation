@@ -1,9 +1,6 @@
 package org.concordion.cubano.template.driver.ui.google;
 
-import java.util.List;
-
 import org.concordion.cubano.driver.BrowserBasedTest;
-import org.concordion.cubano.template.AppConfig;
 import org.concordion.cubano.template.driver.ui.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,8 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
-    public GoogleSearchPage(BrowserBasedTest test) {
+import java.util.List;
+
+public class TvnzLoginPage extends PageObject<TvnzLoginPage> {
+    public TvnzLoginPage(BrowserBasedTest test) {
         super(test);
     }
 
@@ -25,27 +24,42 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
     @FindBy(css = "div.rc")
     List<SearchResult> searchResults;
 
+    @FindBy(className = "Form-logo-link")
+    WebElement logo;
 
+    @FindBy(id = "email")
+    WebElement email;
+
+    @FindBy(id = "password")
+    WebElement passwordField;
+
+    @FindBy(xpath = "//*[@type=\"Submit\"]")
+    WebElement submitButton;
 
     @Override
     public ExpectedCondition<?> pageIsLoaded(Object... params) {
-        return ExpectedConditions.visibilityOf(query);
+        return ExpectedConditions.visibilityOf(logo);
     }
 
-    public static GoogleSearchPage open(BrowserBasedTest test) {
-        test.getBrowser().getDriver().navigate().to("https://www.google.com/");
-
-        return new GoogleSearchPage(test);
+    public static TvnzLoginPage open(BrowserBasedTest test) {
+        test.getBrowser().getDriver().navigate().to("https://login.tech.tvnz.co.nz/");
+        return new TvnzLoginPage(test);
     }
 
+    public TvnzPersonalPage login(BrowserBasedTest test, String userName,String password){
+        email.sendKeys(userName);
+        passwordField.sendKeys(password);
+        submitButton.click();
+        return new TvnzPersonalPage(test);
+    }
 
-    public GoogleSearchPage searchForElementNotFound() {
+    public TvnzLoginPage searchForElementNotFound() {
 
         elementNotFound.sendKeys("you won't find me");
         return this;
     }
 
-    public GoogleSearchPage searchFor(String term) {
+    public TvnzLoginPage searchFor(String term) {
 
         query.sendKeys(term);
         capturePage(query);
@@ -68,7 +82,7 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
 
         return null;
     }
-    public void isExist(){
-
+    public boolean isExist(){
+        return logo.isDisplayed();
     }
 }

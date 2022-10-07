@@ -1,9 +1,6 @@
 package org.concordion.cubano.template.driver.ui.google;
 
-import java.util.List;
-
 import org.concordion.cubano.driver.BrowserBasedTest;
-import org.concordion.cubano.template.AppConfig;
 import org.concordion.cubano.template.driver.ui.PageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,8 +8,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
-    public GoogleSearchPage(BrowserBasedTest test) {
+import java.util.List;
+
+public class TvnzPersonalPage extends PageObject<TvnzPersonalPage> {
+    public TvnzPersonalPage(BrowserBasedTest test) {
         super(test);
     }
 
@@ -25,27 +24,31 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
     @FindBy(css = "div.rc")
     List<SearchResult> searchResults;
 
+    @FindBy(className = "SiteNav-tvnz-logo")
+    WebElement logo;
 
+    @FindBy(xpath = "//*[contains(text(),'Login')][@class=\"SiteNav-item--title-link\"]")
+    WebElement loginBTN;
 
     @Override
     public ExpectedCondition<?> pageIsLoaded(Object... params) {
-        return ExpectedConditions.visibilityOf(query);
+        return ExpectedConditions.visibilityOf(logo);
     }
 
-    public static GoogleSearchPage open(BrowserBasedTest test) {
-        test.getBrowser().getDriver().navigate().to("https://www.google.com/");
+    public static TvnzPersonalPage open(BrowserBasedTest test) {
+        test.getBrowser().getDriver().navigate().to("https://www.tvnz.co.nz/");
 
-        return new GoogleSearchPage(test);
+        return new TvnzPersonalPage(test);
     }
 
 
-    public GoogleSearchPage searchForElementNotFound() {
+    public TvnzPersonalPage searchForElementNotFound() {
 
         elementNotFound.sendKeys("you won't find me");
         return this;
     }
 
-    public GoogleSearchPage searchFor(String term) {
+    public TvnzPersonalPage searchFor(String term) {
 
         query.sendKeys(term);
         capturePage(query);
@@ -68,7 +71,7 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
 
         return null;
     }
-    public void isExist(){
-
+    public boolean isExist(){
+        return logo.isDisplayed();
     }
 }

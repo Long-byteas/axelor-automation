@@ -1,7 +1,5 @@
 package org.concordion.cubano.template.driver.ui.google;
 
-import java.util.List;
-
 import org.concordion.cubano.driver.BrowserBasedTest;
 import org.concordion.cubano.template.AppConfig;
 import org.concordion.cubano.template.driver.ui.PageObject;
@@ -11,8 +9,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
-    public GoogleSearchPage(BrowserBasedTest test) {
+import java.util.List;
+
+public class EnhanceSearchPage extends PageObject<EnhanceSearchPage> {
+    public EnhanceSearchPage(BrowserBasedTest test) {
         super(test);
     }
 
@@ -25,27 +25,27 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
     @FindBy(css = "div.rc")
     List<SearchResult> searchResults;
 
-
+    @FindBy(className = "headerText")
+    WebElement header;
 
     @Override
     public ExpectedCondition<?> pageIsLoaded(Object... params) {
-        return ExpectedConditions.visibilityOf(query);
+        return ExpectedConditions.visibilityOf(header);
     }
 
-    public static GoogleSearchPage open(BrowserBasedTest test) {
-        test.getBrowser().getDriver().navigate().to("https://www.google.com/");
+    public static EnhanceSearchPage open(BrowserBasedTest test) {
+        test.getBrowser().getDriver().navigate().to("https://www.enhanceconsulting.co.nz/");
 
-        return new GoogleSearchPage(test);
+        return new EnhanceSearchPage(test);
     }
 
-
-    public GoogleSearchPage searchForElementNotFound() {
+    public EnhanceSearchPage searchForElementNotFound() {
 
         elementNotFound.sendKeys("you won't find me");
         return this;
     }
 
-    public GoogleSearchPage searchFor(String term) {
+    public EnhanceSearchPage searchFor(String term) {
 
         query.sendKeys(term);
         capturePage(query);
@@ -68,7 +68,7 @@ public class GoogleSearchPage extends PageObject<GoogleSearchPage> {
 
         return null;
     }
-    public void isExist(){
-
+    public boolean isExist(){
+        return header.isDisplayed();
     }
 }
